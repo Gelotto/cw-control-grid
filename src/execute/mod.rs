@@ -1,3 +1,3 @@
-mod do_something;
+mod buy_tickets;
 
-pub use do_something::do_something;
+pub use buy_tickets::buy_tickets;

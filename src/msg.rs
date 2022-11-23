@@ -1,30 +1,34 @@
+use cosmwasm_std::{Addr, Uint128};
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
-use crate::state::Something;
+
+use crate::models::Order;
 
 /// Initial contract state.
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 pub struct InstantiateMsg {
-  pub value: Option<String>,
+  pub ticket_prices: Vec<Uint128>,
+  pub ticket_counts: Vec<u32>,
+  pub token: Token,
 }
 
 /// Executable contract endpoints.
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum ExecuteMsg {
-  DoSomething {
-    value: Option<String>,
-  },
+  BuyTickets { orders: Vec<Order> },
 }
 
 /// Custom contract query endpoints.
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum QueryMsg {
-  GetSomething {},
+  GetGrid {},
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
-pub struct GetSomethingResponse {
-  pub something: Something,
+#[serde(rename_all = "snake_case")]
+pub enum Token {
+  Native { denom: String },
+  Cw20 { address: Addr },
 }
